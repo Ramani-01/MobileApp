@@ -1,0 +1,63 @@
+# Node.js dependencies
+node_modules/
+
+# Output directories
+dist/
+build/
+web-build/
+android/app/build/
+ios/build/
+ios/Pods/
+
+# Expo
+.expo/
+.expo-shared/
+expo-env.d.ts
+
+# Logs and debugging
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+*.log
+
+# Metro
+.metro/
+.metro-health-check/
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Native iOS/Android
+*.keystore
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Kotlin/Swift/Gradle
+.kotlin/
+*.iml
+.gradle/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env and local secrets
+.env
+.env*.local
+
+# VSCode settings (optional)
+.vscode/
+
+# Test coverage
+coverage/
+
+# Git folder safety
+*.swp
+*.swo
