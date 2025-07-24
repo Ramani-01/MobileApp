@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 const Registration = ({ navigation }) => {
@@ -18,7 +26,7 @@ const Registration = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http:// 10.10.32.21:3001/users', {
+      const response = await fetch('http://10.0.2.2:3001/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: username, email, password }),
@@ -41,7 +49,6 @@ const Registration = ({ navigation }) => {
         text2: `Welcome, ${username}!`,
       });
 
-      // Redirect to login after short delay
       setTimeout(() => {
         navigation.navigate('Login');
       }, 1000);
@@ -57,35 +64,50 @@ const Registration = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.container}
+    >
+      <View style={styles.card}>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>Join us to continue</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsername}
+          placeholderTextColor="#999"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+          placeholderTextColor="#999"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          placeholderTextColor="#999"
+        />
 
-      <Button title="Register" onPress={handleRegister} />
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.link}>Already have an account? Login</Text>
+        </TouchableOpacity>
+      </View>
 
       <Toast />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -94,22 +116,57 @@ export default Registration;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
     justifyContent: 'center',
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 20,
+  },
+  card: {
     backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 6,
   },
   title: {
-    fontSize: 28,
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: 26,
     fontWeight: 'bold',
+    marginBottom: 6,
+    textAlign: 'center',
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#777',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   input: {
     height: 50,
-    borderBottomWidth: 1,
-    borderColor: '#aaa',
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    marginBottom: 16,
+    backgroundColor: '#fafafa',
+  },
+  button: {
+    backgroundColor: '#0066cc' ,
+    paddingVertical: 14,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 16,
+  },
+  link: {
+    color: '#0066cc',
+    textAlign: 'center',
+    marginTop: 8,
   },
 });
-                                                                                                                                                                   

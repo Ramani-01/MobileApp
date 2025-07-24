@@ -1,19 +1,23 @@
+
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import {
   View,
   Text,
   TextInput,
   Button,
   StyleSheet,
-  Alert,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Toast.show({
         type: 'error',
@@ -24,12 +28,12 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://10.10.32.21:3001/login', {
+      const response = await fetch('http://10.0.2.2:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include', // Needed if you're using cookies
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
@@ -50,7 +54,6 @@ const Login = ({ navigation }) => {
         text2: `Welcome back, ${data.user.name}`,
       });
 
-      // You can navigate to a home or profile screen if needed
       // navigation.navigate('Home');
 
     } catch (error) {
@@ -64,32 +67,48 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      style={styles.container}
+    >
+      <View style={styles.card}>
+        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Please login to continue</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Email or Username"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Email or Username"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor="#999"
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          placeholderTextColor="#999"
+        />
 
-      <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Registration')} style={{ marginTop: 20 }}>
-        <Text style={styles.link}>Don't have an account? Register</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+          <Text style={styles.link}>Don't have an account? Register</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
+          <Text style={styles.link}>Already have an account? Login</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Toast />
+    </KeyboardAvoidingView>
   );
 };
 
@@ -99,24 +118,56 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 24,
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 20,
+  },
+  card: {
     backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 10,
+    elevation: 6,
   },
   title: {
-    fontSize: 28,
-    marginBottom: 24,
-    alignSelf: 'center',
+    fontSize: 26,
     fontWeight: 'bold',
+    marginBottom: 6,
+    textAlign: 'center',
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#777',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   input: {
-    height: 48,
-    borderBottomWidth: 1,
-    borderColor: '#aaa',
-    marginBottom: 20,
-    paddingHorizontal: 10,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    marginBottom: 16,
+    backgroundColor: '#fafafa',
+  },
+  button: {
+    backgroundColor: '#0066cc',
+    paddingVertical: 14,
+    borderRadius: 10,
+    marginBottom: 12,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 16,
   },
   link: {
     color: '#0066cc',
     textAlign: 'center',
+    marginTop: 8,
   },
 });
