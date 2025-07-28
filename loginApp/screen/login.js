@@ -4,13 +4,11 @@ import {
   View,
   Text,
   TextInput,
-  Button,
-  StyleSheet,
   TouchableOpacity,
+  StyleSheet,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -27,7 +25,7 @@ const Login = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://10.0.2.2:3001/login', {
+      const response = await fetch('http://192.168.20.120:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,8 +51,9 @@ const Login = ({ navigation }) => {
         text2: `Welcome back, ${data.user.name}`,
       });
 
-      // navigation.navigate('Home');
-
+      setTimeout(() => {
+        navigation.navigate('MapScreen');
+      }, 1000);
     } catch (error) {
       console.error('Login error:', error);
       Toast.show({
@@ -99,10 +98,6 @@ const Login = ({ navigation }) => {
 
         <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
           <Text style={styles.link}>Don't have an account? Register</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity onPress={() => navigation.navigate('MapScreen')}>
-          <Text style={styles.link}>Already have an account? Login</Text>
         </TouchableOpacity>
       </View>
 

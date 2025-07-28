@@ -12,7 +12,7 @@ import Toast from 'react-native-toast-message';
 
 const Registration = ({ navigation }) => {
   const [username, setUsername] = useState('');
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
@@ -26,7 +26,7 @@ const Registration = ({ navigation }) => {
     }
 
     try {
-      const response = await fetch('http://10.0.2.2:3001/users', {
+      const response = await fetch('http://192.168.20.120:3001/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: username, email, password }),
@@ -52,7 +52,6 @@ const Registration = ({ navigation }) => {
       setTimeout(() => {
         navigation.navigate('Login');
       }, 1000);
-
     } catch (error) {
       console.error('Register error:', error);
       Toast.show({
@@ -105,7 +104,6 @@ const Registration = ({ navigation }) => {
           <Text style={styles.link}>Already have an account? Login</Text>
         </TouchableOpacity>
       </View>
-
       <Toast />
     </KeyboardAvoidingView>
   );
@@ -153,7 +151,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafafa',
   },
   button: {
-    backgroundColor: '#0066cc' ,
+    backgroundColor: '#0066cc',
     paddingVertical: 14,
     borderRadius: 10,
     marginBottom: 12,

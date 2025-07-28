@@ -37,6 +37,7 @@ const MapScreen = () => {
           distanceInterval: 10,
         },
         (loc) => {
+          // Location tracking callback
           const { latitude, longitude } = loc.coords;
           const userLocation = { latitude, longitude };
           setLocation(userLocation);
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
   arrivalText: {
     marginTop: 5,
     fontSize: 14,
-    color: "#2e7d32", // green
+    color: "#2e7d32",
     fontWeight: "600",
   },
 });
