@@ -1,71 +1,83 @@
-import React, { useState } from 'react';
-import { Picker } from '@react-native-picker/picker';
+// screens/FeedbackScreen.js
 
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   Button,
   Alert,
-  Slider
+  StyleSheet,
+  ScrollView,
 } from 'react-native';
-import { ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import Slider from '@react-native-community/slider';
 
-export default function FeedbackScreen() {
+const FeedbackScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [course, setCourse] = useState('');
   const [rating, setRating] = useState(5);
 
-  const validateEmail = (email) => {
-    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
+  const handleSubmit = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!name || !email || !course) {
+      Alert.alert('Error', 'All fields are required.');
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      Alert.alert('Error', 'Enter a valid email address.');
+      return;
+    }
+
+    Alert.alert('Success', 'Feedback submitted successfully!');
   };
 
-  const handleSubmit = () => {
-    if (!name || !email || !course) {
-      Alert.alert('All fields are required!');
-    } else if (!validateEmail(email)) {
-      Alert.alert('Invalid email format!');
-    } else {
-      Alert.alert('Feedback submitted successfully!');
-      console.log({ name, email, course, rating });
-    }
+  const handleClear = () => {
+    setName('');
+    setEmail('');
+    setCourse('');
+    setRating(5);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.label}>Name</Text>
+      <Text style={styles.title}>📝 Feedback Form</Text>
+
+      <Text style={styles.label}>Name:</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter your name"
-        onChangeText={setName}
         value={name}
+        onChangeText={setName}
       />
 
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>Email:</Text>
       <TextInput
         style={styles.input}
         placeholder="Enter your email"
-        keyboardType="email-address"
-        onChangeText={setEmail}
         value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
 
-      <Text style={styles.label}>Course</Text>
-      <Picker
-        selectedValue={course}
-        style={styles.picker}
-        onValueChange={(itemValue) => setCourse(itemValue)}
-      >
-        <Picker.Item label="--Select Course--" value="" />
-        <Picker.Item label="React Native" value="react-native" />
-        <Picker.Item label="Data Science" value="data-science" />
-        <Picker.Item label="Web Development" value="web-dev" />
-      </Picker>
+      <Text style={styles.label}>Course:</Text>
+      <View style={styles.pickerWrapper}>
+        <Picker
+          selectedValue={course}
+          onValueChange={(itemValue) => setCourse(itemValue)}
+        >
+          <Picker.Item label="Select Course" value="" />
+          <Picker.Item label="Web Development" value="Web Dev" />
+          <Picker.Item label="Data Science" value="Data Science" />
+          <Picker.Item label="AI & ML" value="AI ML" />
+        </Picker>
+      </View>
 
-      <Text style={styles.label}>Rate your learning experience: {rating}</Text>
+      <Text style={styles.label}>Rate your learning experience:</Text>
       <Slider
         style={{ width: '100%', height: 40 }}
         minimumValue={1}
@@ -74,19 +86,28 @@ export default function FeedbackScreen() {
         value={rating}
         onValueChange={setRating}
       />
+      <Text style={styles.ratingText}>Rating: {rating}</Text>
 
       <View style={styles.buttonContainer}>
-        <Button title="Submit Feedback" onPress={handleSubmit} />
+        <Button title="Submit" onPress={handleSubmit} />
+        <View style={{ height: 10 }} />
+        <Button title="Clear" onPress={handleClear} color="red" />
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: '#fff',
     flexGrow: 1,
+    padding: 20,
+    backgroundColor: '#f4f4f4',
+  },
+  title: {
+    fontSize: 26,
+    marginBottom: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   label: {
     fontSize: 16,
@@ -94,17 +115,26 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#aaa',
+    borderColor: '#ccc',
+    borderRadius: 6,
     padding: 10,
     marginTop: 5,
-    borderRadius: 5,
+    backgroundColor: 'white',
   },
-  picker: {
-    height: 50,
-    width: '100%',
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 6,
     marginTop: 5,
+    overflow: 'hidden',
+  },
+  ratingText: {
+    textAlign: 'center',
+    marginBottom: 10,
   },
   buttonContainer: {
-    marginTop: 30,
+    marginTop: 20,
   },
 });
+
+export default FeedbackScreen;
